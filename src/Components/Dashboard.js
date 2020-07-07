@@ -1,24 +1,35 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { getUser } from "../redux/reducer";
 
 class Dashboard extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: { id: 1, name: 'Tony Stark', image: 'https://i1.wp.com/themarvelreport.com/wp-content/uploads/2019/05/Tony-Stark-Iron-Man.jpg?fit=1280%2C720', hobbies: ['Being Rich, Having a Super Suit, Shawarma'] }
-        }
-    }
+  changeAvenger = () => {
+    // axios request or anything to change the data
+    let newAvenger = {
+      id: 2,
+      name: "Thor",
+      image:
+        "https://upload.wikimedia.org/wikipedia/en/thumb/3/3c/Chris_Hemsworth_as_Thor.jpg/220px-Chris_Hemsworth_as_Thor.jpg",
+      hobbies: ["Hammers", "Lightning", "Speaking Groot"]
+    };
 
-    render() {
-        return (
-            <div className='dashboard'>
-                <h1>{this.state.user.name}</h1>
-                <p className='hobbies'>Hobbies</p>
-                {this.state.user.hobbies.map((hobby, i) => (
-                    <p key={i}>{hobby}</p>
-                ))}
-            </div>
-        )
-    }
+    this.props.getUser(newAvenger);
+  };
+
+  render() {
+    return (
+      <div className="dashboard">
+        <h1>{this.props.user.name}</h1>
+        <p className="hobbies">Hobbies</p>
+        {this.props.user.hobbies.map((hobby, i) => (
+          <p key={i}>{hobby}</p>
+        ))}
+        <button onClick={this.changeAvenger}>Change Avenger</button>
+      </div>
+    );
+  }
 }
 
-export default Dashboard;
+const mapStateToProps = (reduxState) => reduxState;
+
+export default connect(mapStateToProps, { getUser })(Dashboard);
